@@ -14,7 +14,7 @@ server:
         threshold: INFO
         currentLogFilename: /var/log/health/access.log
         archivedLogFilenamePattern: /var/log/health/access-%i.log.gz
-        logFormat: '%date{dd-MM-yyyy-HH:mm:ss:SSS} %header{X-Flipkart-Client} %header{X-Request-Id} %header{X-Request-Host}
+        logFormat: '%date{dd-MM-yyyy-HH:mm:ss:SSS} %header{Request-Id} %header{Request-Host}
             %header{FK-Client-IP} "%requestURL" %statusCode %bytesSent %elapsedTime'
         archivedFileCount: 1
         timeZone: UTC+05:30
@@ -32,7 +32,7 @@ server:
       #  threshold: INFO
       #  archive: false
       #  currentLogFilename: /var/log/health/detailed-request.log
-      #  logFormat: '%date{dd-MM-yyyy HH:mm:ss:SSS} %header{X-Flipkart-Client} %header{X-Request-Id} %header{X-Request-Host}
+      #  logFormat: '%date{dd-MM-yyyy HH:mm:ss:SSS} %header{Request-Id} %header{Request-Host}
       #      %header{FK-Client-IP} "%requestURL" %statusCode %bytesSent %elapsedTime
       #      | RequestHeaders:"%header" | Request:"%fullRequest" | ResponseHeaders:"%responseHeader" | Response:"%fullResponse"'
       #  timeZone: UTC+05:30
