@@ -1,17 +1,5 @@
 # Health Application 
-
-This will be my part time work for betterment of health in India. This project contains 2 major components.
-# Components
-1. **Frontend**: Website (mobile application later).
-2. **Backend**: Rest based application.
-
-# Entities/Features.
-1. **Hospital**: This component will include various feature to manage hospital infrastructure and drug inventories. 
-2. **Patient**: This component will have features for patients so that they can have a smooth experience than ever.
-3. **Doctor**: This component will have features for doctors so that they can manage their time and serve patients better.
-4. **Drugs**: This component will have feature to manage drugs inventory.
-5. **Infrastructure**: This component will have feature to manage hospital infrastructure.
-
+Sample dropwizard application to facilitate health requirement.
 
 # IntellijIdea
 - mvn clean install
