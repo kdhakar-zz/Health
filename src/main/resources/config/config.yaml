@@ -1,0 +1,61 @@
+server:
+  maxThreads: 128
+  minThreads: 64
+  applicationConnectors:
+    - type: http
+      port: 9000
+      idleTimeout: 10 seconds
+  adminConnectors:
+    - type: http
+      port: 9001
+  requestLog:
+    appenders:
+      - type: file
+        threshold: INFO
+        currentLogFilename: /var/log/health/access.log
+        archivedLogFilenamePattern: /var/log/health/access-%i.log.gz
+        logFormat: '%date{dd-MM-yyyy-HH:mm:ss:SSS} %header{X-Flipkart-Client} %header{X-Request-Id} %header{X-Request-Host}
+            %header{FK-Client-IP} "%requestURL" %statusCode %bytesSent %elapsedTime'
+        archivedFileCount: 1
+        timeZone: UTC+05:30
+        maxFileSize: 200MB
+      # Detailed-request logger may be configured to log compleate request and response (header+body).
+      # Disabled in production: Due to its intrusive nature, TeeFilter can slow down performance. Although logback have fixed all currently known bugs.
+      # Keeping this config for debugging, capturing nfr-data.
+      # Dependency: This depends on TeeFilter to be added to dropwizard environment in run method.
+      #  /** Add below lined in run metnod of dropwizard application
+      #   *  environment.servlets()
+      #   *      .addFilter("TeeFilter", new TeeFilter())
+      #   *      .addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+      #   */
+      #- type: file
+      #  threshold: INFO
+      #  archive: false
+      #  currentLogFilename: /var/log/health/detailed-request.log
+      #  logFormat: '%date{dd-MM-yyyy HH:mm:ss:SSS} %header{X-Flipkart-Client} %header{X-Request-Id} %header{X-Request-Host}
+      #      %header{FK-Client-IP} "%requestURL" %statusCode %bytesSent %elapsedTime
+      #      | RequestHeaders:"%header" | Request:"%fullRequest" | ResponseHeaders:"%responseHeader" | Response:"%fullResponse"'
+      #  timeZone: UTC+05:30
+      #  maxFileSize: 200MB
+
+logging:
+  level: noop
+
+mysql:
+  url: jdbc:mysql://localhost:3306/health?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8
+  driver: com.mysql.cj.jdbc.Driver
+  username: root
+  password: ""
+  queryTimeout: 5000    # milliseconds
+  connectionProvider: org.hibernate.connection.C3P0ConnectionProvider
+  c3p0:
+    minSize: 5
+    maxSize: 30
+    timeout: 3600 # seconds
+    maxStatements: 0
+    idleTestPeriod: 900 # seconds
+    acquireIncrement: 5
+
+guava:
+  maxEntries: 100
+  expiry: 900

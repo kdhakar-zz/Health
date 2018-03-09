@@ -1,0 +1,8 @@
+# healthConfig to ignore file and folder in git chages#
+*.iml
+*.ipr
+*.iws
+*.idea
+*target
+*dependency-reduced-pom.xml
+

@@ -1,0 +1,75 @@
+<configuration debug="false">
+
+    <property name="logFolder" value="/var/log/core/"/>
+    <property name="format.detailed" value='%level %date{dd-MM-yyyy-HH:mm:ss:SSS} %mdc{X-Client-Id} %mdc{X-Request-Id} %logger "%msg" %exception{10}%n'/>
+    <property name="format.readable" value="timestamp=%d{yyyy-MM-dd HH:mm:ss.SSS} | level=%level | logger=%logger{0} | msg=%msg%n%rEx{10}"/>
+
+    <!-- Create appenders and their async counterparts now -->
+    <appender name="Stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${format.readable}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Create appenders and their async counterparts now -->
+    <appender name="RootDebug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logFolder}/debug.log</File>
+        <Append>true</Append>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${logFolder}/debug.log.%i.gz</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>3</maxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>500MB</maxFileSize>
+            <maxHistory>1</maxHistory>
+        </triggeringPolicy>
+
+        <encoder>
+            <pattern>${format.detailed}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="RootDebug-async" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="RootDebug"/>
+    </appender>
+
+    <appender name="RootError" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFolder}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${logFolder}/error.log.%i.gz</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>3</maxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>500MB</maxFileSize>
+            <maxHistory>2</maxHistory>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>
+                ${format.detailed}
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+    <appender name="RootError-async" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="RootError"/>
+    </appender>
+
+    <!-- End appenders -->
+
+    <!-- Begin logger level configurations -->
+    <!-- If you want debug logs, change level to DEBUG-->
+    <root level="ERROR">
+        <appender-ref ref="RootDebug-async"/>
+        <appender-ref ref="RootError-async"/>
+        <appender-ref ref="Stdout"/>
+    </root>
+
+    <!-- End logger level configurations -->
+</configuration>
